@@ -1,0 +1,12 @@
+hostname
+if [ ! -f /var/run/ha/running-slave ]; 
+	then 
+		blacklists=$(grep -rl enabled=on /ub/conf/db/blocklist | xargs grep -l type=black | xargs awk -F"=" '/^name/{print $2}'); 
+		for blacklist in $blacklists; 
+		do 
+			echo $blacklist; 
+			zgrep -c $blacklist /data/system-logs/network-security/* | grep -v :0; echo ""; 
+		done; 
+		echo ""; 
+fi
+
